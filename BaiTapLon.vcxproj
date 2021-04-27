@@ -20,17 +20,23 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameBoard.cpp" />
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="SDL_image_functions.cpp" />
+    <ClCompile Include="SDL_mixer_function.cpp" />
     <ClCompile Include="SDL_ttf_function.cpp" />
     <ClCompile Include="SDL_utils.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Tile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="clipboard.h" />
     <ClInclude Include="D:\BaiTapLon\SDL_image_functions.h" />
     <ClInclude Include="GameBoard.h" />
+    <ClInclude Include="game.h" />
     <ClInclude Include="SDL_mixer_function.h" />
     <ClInclude Include="SDL_ttf_function.h" />
     <ClInclude Include="SDL_utils.h" />
+    <ClInclude Include="Tile.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

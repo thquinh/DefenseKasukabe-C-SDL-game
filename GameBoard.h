@@ -3,6 +3,8 @@
 #include <iostream>
 #include <SDL.h>
 #include <SDL_image.h>
+#include "SDL_mixer_function.h"
+#include "Tile.h"
 
 using namespace std;
 
@@ -10,42 +12,20 @@ const int Board_row = 8;
 const int Board_col = 8;
 const int NumOfTile = 5;
 
-enum Tile_Status {
-	empty = 0,
-	Kazama,
-	Bo,
-	Nene,
-	Shin,
-	Masao
-};
-
-class Tile {
-    
-public:    
-    SDL_Renderer* renderer;
-    int x, y;
-    int w = 70, h = 70;
-    int mark;
-    Tile_Status status;
-    Tile(int _x, int _y, int _w, int _h) : x(_x), y(_y), w(_w), h(_h) {};
-    Tile() {};
-    ~Tile() {};  
-    void Update_status();
-    void render();
-    void render_selected();
-    void render_match(Tile otherTile);
-};
 class Board {
-
+    SDL_Renderer* renderer = NULL;
+    long hidden_point = 0;
+    int speed = 25;
 public:   
-    SDL_Renderer* renderer;
-    Tile Img_Board[Board_row][Board_col];
+    Tile Tile_Board[Board_row][Board_col];
+    Board() {};
     Board(SDL_Renderer* _renderer) : renderer(_renderer){}
+
+    void Find_Tile_Selected(int xmouse, int ymouse, int &move);
     void Fill_board();
-    bool Find_Match();
-    void Drop_Tiles();
+    bool Find_Match(long &count_point);
+    void Drop_Tiles(long & point);
     bool Check_Possible_Move();
     void Mix_Tiles();    
-    void Render_board();
 };
 #endif // !GAMEBOARD_H

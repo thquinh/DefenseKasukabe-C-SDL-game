@@ -24,13 +24,26 @@ void Show_image(SDL_Renderer* renderer, const char* str_image, SDL_Rect rect)
         SDL_RenderPresent(renderer);
         SDL_FreeSurface(image);
     }
+    SDL_DestroyTexture(texture);
+    texture = NULL;
+    IMG_Quit();
 }
-void CloseIMG()
+void CreateImg(SDL_Renderer* renderer, const char* str_image, SDL_Rect rect)
 {
-    if (texture != NULL)
+    IMG_Init(IMG_INIT_PNG);
+    image = IMG_Load(str_image);
+    if (image == NULL)
     {
-        SDL_DestroyTexture(texture);
-        texture = NULL;
+        cerr << "Unable to load image!" << str_image << endl
+            << "SDL Error: " << SDL_GetError();
     }
+    else
+    {
+        texture = SDL_CreateTextureFromSurface(renderer, image);
+        SDL_RenderCopy(renderer, texture, NULL, &rect);
+        SDL_FreeSurface(image);
+    }
+    SDL_DestroyTexture(texture);
+    texture = NULL;
     IMG_Quit();
 }

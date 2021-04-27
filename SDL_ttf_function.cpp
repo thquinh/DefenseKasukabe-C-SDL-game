@@ -24,15 +24,9 @@ void LoadFont(const char* Text, SDL_Renderer* renderer, SDL_Rect Text_rect)
 		SDL_RenderPresent(renderer);
 		SDL_FreeSurface(textSurface);
 	}
-}
-void CloseFont()
-{
 	TTF_CloseFont(Font);
 	Font = NULL;
-	if (StrTexture != NULL)
-	{
-		SDL_DestroyTexture(StrTexture);
-		StrTexture = NULL;
-	}
+	SDL_DestroyTexture(StrTexture);
+	StrTexture = NULL;
 	TTF_Quit();
 }
