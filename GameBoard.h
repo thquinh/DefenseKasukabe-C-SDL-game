@@ -19,13 +19,14 @@ class Board {
 public:   
     Tile Tile_Board[Board_row][Board_col];
     Board() {};
-    Board(SDL_Renderer* _renderer) : renderer(_renderer){}
+    Board(SDL_Renderer* _renderer) : renderer(_renderer) {};
 
     void Find_Tile_Selected(int xmouse, int ymouse, int &move);
     void Fill_board();
     bool Find_Match(long &count_point);
     void Drop_Tiles(long & point);
     bool Check_Possible_Move();
-    void Mix_Tiles();    
+    void Mix_Tiles();   
+    void render_board();
 };
 #endif // !GAMEBOARD_H

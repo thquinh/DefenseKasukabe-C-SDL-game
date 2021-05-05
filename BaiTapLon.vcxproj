@@ -29,7 +29,6 @@
     <ClCompile Include="Tile.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="clipboard.h" />
     <ClInclude Include="D:\BaiTapLon\SDL_image_functions.h" />
     <ClInclude Include="GameBoard.h" />
     <ClInclude Include="game.h" />

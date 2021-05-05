@@ -16,10 +16,7 @@ int main(int argc, char* argv[])
     SDL_Renderer* renderer;
     srand(time(0));
     initSDL(window, renderer, SCREEN_WIDTH, SCREEN_HEIGHT, WINDOW_TITLE);
-
     //render gameplay
-    test(renderer);
-
     SDL_Event e;
     bool quit = false;
     while (!quit) {
@@ -28,15 +25,15 @@ int main(int argc, char* argv[])
         if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_ESCAPE) break;
         Game GameH(renderer, e);
         GameH.initialize_Game();
-        cout << "here";
-        waitUntilKeyPressed();
-        SDL_SetRenderDrawColor(renderer, 100, 100, 100, 10);
-        SDL_Rect rect = { 0, 0, 900, 600 };
-        SDL_RenderFillRect(renderer, &rect);
-        SDL_RenderPresent(renderer);
-        waitUntilKeyPressed();
-
+        GameH.selectLevel();
+        while (!quit) {
+            int temp = GameH.Gameplay();
+            if (temp == -1) quit = true;
+            else if (temp == 1) break;
+            else continue;
+        }
     }
+    CloseMusic();
     quitSDL(window, renderer);
     return 0;
 }

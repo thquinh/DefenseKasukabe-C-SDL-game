@@ -6,9 +6,16 @@
 
 using namespace std;
 
+void Board::render_board() {
+    for (int i = 0; i < Board_col; i++) {
+        for (int j = 0; j < Board_row; j++) {
+            Tile_Board[j][i].render();
+        }
+    }
+}
 void Board::Find_Tile_Selected(int xmouse, int ymouse, int &move)
 {
-    Mix_PlayChannel(-1, selected_sound, 0);
+    if (!Mix_Paused(-1)) Mix_PlayChannel(-1, selected_sound, 0);
     static int count_select = 0;
     static int tempR = 0, tempC = 0;
     for (int i = 0; i < Board_row; i++) {
@@ -34,9 +41,8 @@ void Board::Find_Tile_Selected(int xmouse, int ymouse, int &move)
                             Tile_Board[tempR][tempC].render();
                             if (!Find_Match(hidden_point)) {
                                 swap(Tile_Board[i][j].mark, Tile_Board[tempR][tempC].mark);
-                                Mix_PlayChannel(1, reverse_sound, 0);
+                                if (!Mix_Paused(-1)) Mix_PlayChannel(1, reverse_sound, 0);
                                 Tile_Board[tempR][tempC].swapTile(Tile_Board[i][j]);
-                         
                             }
                             Tile_Board[i][j].render();
                             Tile_Board[tempR][tempC].render();
@@ -73,8 +79,11 @@ bool Board::Find_Match(long &count_point){
                 for (int temp = j; temp < k; temp++)
                 {
                     Tile_Board[i][temp].status = Tile_Status::Empty;
-                    Mix_Pause(1);
-                    Mix_PlayChannel(1, eatable_sound, 0);
+
+                    if (!Mix_Paused(-1)) {
+                        Mix_Pause(1);
+                        Mix_PlayChannel(1, eatable_sound, 0);
+                    }
                     Tile_Board[i][temp].render_empty();
                 }
                 SDL_RenderPresent(renderer);
@@ -92,6 +101,7 @@ bool Board::Find_Match(long &count_point){
                         }
                     }
                 }
+                SDL_RenderPresent(renderer);
                 count_point += count_type * 100;
             }
             j = k;
@@ -109,8 +119,10 @@ bool Board::Find_Match(long &count_point){
                 count_point += (k - j) * 100;
                 for (int temp = j; temp < k; temp++) {
                     Tile_Board[temp][i].status = Tile_Status::Empty;
-                    Mix_Pause(1);
-                    Mix_PlayChannel(1, eatable_sound, 0);
+                    if (!Mix_Paused(-1)) {
+                        Mix_Pause(1);
+                        Mix_PlayChannel(1, eatable_sound, 0);
+                    }
                     Tile_Board[temp][i].render_empty();
                 }
                 SDL_RenderPresent(renderer);
@@ -128,6 +140,7 @@ bool Board::Find_Match(long &count_point){
                         }
                     }
                 }
+                SDL_RenderPresent(renderer);
                 count_point += count_type * 100;
             }
             j = k;
@@ -145,25 +158,32 @@ bool Board::Find_Match(long &count_point){
     return false;
 }
 bool Board::Check_Possible_Move(){
+    Board virtual_board;
+    for (int i = 0; i < Board_row; i++)
+    {
+        for (int j = 0; j < Board_col; j++)
+        {
+
+            virtual_board.Tile_Board[i][j].mark = Tile_Board[i][j].mark;
+        }
+    }
     for (int i = 0; i < Board_row; i++)
     {
         for (int j = 0; j < Board_col - 1; j++)
         {
-            swap(Tile_Board[i][j].mark, Tile_Board[i][j + 1].mark);
-            if (Find_Match(hidden_point)) {
-                swap(Tile_Board[i][j].mark, Tile_Board[i][j + 1].mark);
+            swap(virtual_board.Tile_Board[i][j].mark, virtual_board.Tile_Board[i][j+1].mark);
+            if (virtual_board.Find_Match(hidden_point)) {
                 return true;
             }
-            swap(Tile_Board[i][j].mark, Tile_Board[i][j + 1].mark);
+            swap(virtual_board.Tile_Board[i][j].mark, virtual_board.Tile_Board[i][j + 1].mark);
         }
     }
     for (int i = 0; i < Board_col - 1; i++)
     {
         for (int j = 0; j < Board_row; j++)
         {
-            swap(Tile_Board[i][j].mark, Tile_Board[i + 1][j].mark);
-            if (Find_Match(hidden_point)) {
-                swap(Tile_Board[i][j].mark, Tile_Board[i + 1][j].mark);
+            swap(virtual_board.Tile_Board[i][j].mark, virtual_board.Tile_Board[i+1][j].mark);
+            if (virtual_board.Find_Match(hidden_point)) {
                 return true;
             }
             swap(Tile_Board[i][j].mark, Tile_Board[i + 1][j].mark);
@@ -234,7 +254,6 @@ void Board::Mix_Tiles(){
     {
         for (int j = 0; j < Board_col; j++)
         {
-            //random hàng mí c?t
             int rm = rand() % Board_row, rn = rand() % Board_col;
             if (check_fill[rm][rn]) {
                 j--;
