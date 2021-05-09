@@ -89,9 +89,9 @@ bool Board::Find_Match(long &count_point){
                 SDL_RenderPresent(renderer);
             }
             int count_type = 0;
-            if (k - j == 5) {
+            if (k - j >= 5) {
                 speed = 65;
-                int temp = Tile_Board[j][i].mark;
+                int temp = Tile_Board[i][j].mark;
                 for (int i = 0; i < Board_col; i++) {
                     for (int j = 0; j < Board_row; j++) {
                         if (Tile_Board[j][i].mark == temp) {
@@ -128,7 +128,7 @@ bool Board::Find_Match(long &count_point){
                 SDL_RenderPresent(renderer);
             }
             int count_type = 0;
-            if (k - j == 5) {
+            if (k - j >= 5) {
                 speed = 65;
                 int temp = Tile_Board[j][i].mark;
                 for (int i = 0; i < Board_col; i++) {
